@@ -1,7 +1,7 @@
 meta {
     title: "Forest";
     description: "Display detailed description of forest stands & related objects";
-    version: "0.0.51";
+    version: "0.0.52";
     author: "igitov";
     icon: "other/icon.svg";
     link: "https://github.com/igitov/forest-josm-style"
@@ -119,6 +119,7 @@ node[forestry_sign=informational] { icon-image: "other/board-info.svg" }
 
 node[signpost=forestry_allotment] {
     set spallot;
+    text: inscription;
     icon-image: "other/spallot.svg";
     z-index: 7
 }
@@ -133,6 +134,7 @@ node|z-12.spallot { icon-width: 1 }
 
 node[signpost=forestry_compartment] {
     set spcompart;
+    text: inscription;
     icon-image: "other/spcompart.svg";
     z-index: 7
 }
