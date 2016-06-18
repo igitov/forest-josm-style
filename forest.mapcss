@@ -1,9 +1,10 @@
 meta {
     title: "Forest";
     description: "Display detailed description of forest stands & related objects";
-    version: "0.0.50";
+    version: "0.0.51";
     author: "igitov";
-    icon: "other/icon.svg"
+    icon: "other/icon.svg";
+    link: "https://github.com/igitov/forest-josm-style"
 }
 
 meta[lang=ru] {
