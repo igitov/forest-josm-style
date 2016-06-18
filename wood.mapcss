@@ -1,0 +1,2868 @@
+meta {
+    title: "Forest";
+    description: "Display detailed description of forest stands & related objects";
+    version: "0.0.50";
+    author: "igitov";
+    icon: "other/icon.svg"
+}
+
+meta[lang=ru] {
+    title: "Лес";
+    description: "Отображение подробной характеристики лесонасаждений и сопутствующих объектов";
+}
+
+canvas {
+    default-points: false;
+}
+node {
+    text: auto;
+}
+
+/* ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ style settings ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ */
+
+setting::small_nodes {
+  type: boolean;
+  label: tr("Less obtrusive node symbols at low zoom");
+  default: true;
+}
+
+setting::hide_pattern {
+  type: boolean;
+  label: tr("Draw pattern of area");
+  default: true;
+}
+
+setting::invisible_fill {
+  type: boolean;
+  label: tr("Draw only outline of area");
+  default: false;
+}
+
+
+node {
+    symbol-size: 2;
+    symbol-shape: square;
+    symbol-stroke-color: #bbbbbb
+}
+
+way > node|z-14[setting("small_nodes")]!:tagged {
+    symbol-shape: none;
+}
+node:connection {
+    symbol-stroke-color: #ffff00;
+}
+node:tagged {
+    symbol-stroke-color: none;
+    symbol-fill-color: #00ffff;
+}
+
+way > node|z15[setting("small_nodes")]!:tagged { symbol-size: 1; }
+
+node|z16[setting("small_nodes")]               { symbol-size: 3; }
+way > node|z16[setting("small_nodes")]         { symbol-size: 2; }
+node|z16[setting("small_nodes")]:connection    { symbol-size: 3; }
+
+node|z17[setting("small_nodes")]               { symbol-size: 4; }
+way > node|z17[setting("small_nodes")]         { symbol-size: 3; }
+node|z17[setting("small_nodes")]:connection    { symbol-size: 4; }
+
+node|z18-[setting("small_nodes")]              { symbol-size: 4; }
+way > node|z18-[setting("small_nodes")]        { symbol-size: 4; }
+node|z18-[setting("small_nodes")]:connection   { symbol-size: 5; }
+
+node[!setting("small_nodes")]                  { symbol-size: 4; }
+way > node[!setting("small_nodes")]            { symbol-size: 4; }
+node[!setting("small_nodes")]:connection       { symbol-size: 5; }
+
+node:selected {
+    symbol-shape: square;
+    symbol-size: 6;
+    symbol-fill-color: node_selected#ff0000;
+    symbol-stroke-color: node_selected#ff0000;
+}
+
+/* ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ POI ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ */
+
+/* ==================== wildfire prevention ==================== */
+
+node[man_made=tower][tower:type=observation] {
+    set tower;
+    icon-image: "other/tower.svg";
+    z-index: 7
+}
+
+node|z18-.tower { icon-width: 18 }
+node|z17.tower { icon-width: 16 }
+node|z16.tower { icon-width: 14 }
+node|z15.tower { icon-width: 12 }
+node|z14.tower { icon-width: 10 }
+node|z13.tower { icon-width: 8 }
+node|z-12.tower { icon-width: 1 }
+
+node[forestry_sign] { set board; text: inscription }
+
+node|z18-.board { icon-width: 18 }
+node|z17.board { icon-width: 16 }
+node|z16.board { icon-width: 14 }
+node|z15.board { icon-width: 12 }
+node|z14.board { icon-width: 10 }
+node|z13.board { icon-width: 9 }
+node|z-12.board { icon-width: 1 }
+
+node[forestry_sign=fire_danger_rating] { icon-image: "other/board-fdr.svg" }
+node[forestry_sign=wildfire_prevention] { icon-image: "other/board-wfp.svg" }
+node[forestry_sign=forest_district] { icon-image: "other/board-for.svg" }
+node[forestry_sign=informational] { icon-image: "other/board-info.svg" }
+
+/* ==================== forestry signposts (used in ex-USSR) ==================== */
+
+node[signpost=forestry_allotment] {
+    set spallot;
+    icon-image: "other/spallot.svg";
+    z-index: 7
+}
+
+node|z18-.spallot { icon-width: 9 }
+node|z17.spallot { icon-width: 8 }
+node|z16.spallot { icon-width: 7 }
+node|z15.spallot { icon-width: 6 }
+node|z14.spallot { icon-width: 4.5 }
+node|z13.spallot { icon-width: 3 }
+node|z-12.spallot { icon-width: 1 }
+
+node[signpost=forestry_compartment] {
+    set spcompart;
+    icon-image: "other/spcompart.svg";
+    z-index: 7
+}
+
+node|z18-.spcompart { icon-width: 13 }
+node|z17.spcompart { icon-width: 11 }
+node|z16.spcompart { icon-width: 10 }
+node|z15.spcompart { icon-width: 8.5 }
+node|z14.spcompart { icon-width: 5 }
+node|z13.spcompart { icon-width: 3.5 }
+node|z-12.spcompart { icon-width: 1 }
+
+node[signpost=~/no|none/] {
+    set spnone;
+    icon-image: "other/spnone.svg";
+    z-index: 7
+}
+
+node|z18-.spnone { icon-width: 11 }
+node|z17.spnone { icon-width: 9 }
+node|z16.spnone { icon-width: 8 }
+node|z15.spnone { icon-width: 7 }
+node|z14.spnone { icon-width: 5 }
+node|z13.spnone { icon-width: 3 }
+node|z-12.spnone{ icon-width: 1 }
+
+/* ==================== wildlife management and hunting ==================== */
+
+node[man_made=game_feeder] {
+    set cratch;
+    icon-image: "other/cratch.svg"
+    }
+
+node|z18-.cratch { icon-width: 20 }
+node|z17.cratch { icon-width: 18 }
+node|z16.cratch { icon-width: 16 }
+node|z15.cratch { icon-width: 14 }
+node|z14.cratch { icon-width: 12 }
+node|z13.cratch { icon-width: 10 }
+node|z-12.cratch { icon-width: 1 }
+
+node[man_made=salt_lick] {
+    set saltlick;
+    icon-image: "other/salt-lick.svg"
+    }
+
+node|z18-.saltlick { icon-width: 18 }
+node|z17.saltlick { icon-width: 16 }
+node|z16.saltlick { icon-width: 14 }
+node|z15.saltlick { icon-width: 12 }
+node|z14.saltlick { icon-width: 10 }
+node|z13.saltlick { icon-width: 8 }
+node|z-12.saltlick { icon-width: 1 }
+
+node[amenity=hunting_stand] {
+    set huntstand
+    }
+
+node|z18-.huntstand { icon-width: 20 }
+node|z17.huntstand { icon-width: 18 }
+node|z16.huntstand { icon-width: 16 }
+node|z15.huntstand { icon-width: 14 }
+node|z14.huntstand { icon-width: 12 }
+node|z13.huntstand { icon-width: 10 }
+node|z-12.huntstand { icon-width: 1 }
+
+node.huntstand[!hunting_stand] { icon-image: "other/hunting-stand-rised.svg" }
+node.huntstand[hunting_stand=raised_hide] { icon-image: "other/hunting-stand-rised.svg" }
+node.huntstand[hunting_stand=hide] { icon-image: "other/hunting-stand-hide.svg" }
+node.huntstand[hunting_stand=tree_stand] { icon-image: "other/hunting-stand-tree.svg" }
+
+/* ==================== amenity in forest ==================== */
+
+node[building][building!=collapsed] {
+    set building;
+    text: name;
+    icon-image: "other/house.svg"
+    }
+
+node|z18-.building { icon-width: 20 }
+node|z17.building { icon-width: 18 }
+node|z16.building { icon-width: 16 }
+node|z15.building { icon-width: 14 }
+node|z14.building { icon-width: 12 }
+node|z13.building { icon-width: 10 }
+node|z-12.building { icon-width: 1 }
+
+
+node[amenity=shelter] {
+    set shelter;
+    text: name;
+    icon-image: "other/shelter.svg"
+    }
+
+node|z18-.shelter { icon-width: 20 }
+node|z17.shelter { icon-width: 18 }
+node|z16.shelter { icon-width: 16 }
+node|z15.shelter { icon-width: 14 }
+node|z14.shelter { icon-width: 12 }
+node|z13.shelter { icon-width: 10 }
+node|z-12.shelter { icon-width: 1 }
+
+node[amenity=picnic_table] {
+    set table;
+    text: name;
+    icon-image: "other/table.svg"
+    }
+
+node|z18-.table { icon-width: 18 }
+node|z17.table { icon-width: 16 }
+node|z16.table { icon-width: 14 }
+node|z15.table { icon-width: 12 }
+node|z14.table { icon-width: 10 }
+node|z13.table { icon-width: 8 }
+node|z-12.table { icon-width: 1 }
+
+node[amenity=bench] {
+    set bench;
+    text: name;
+    icon-image: "other/bench.svg"
+    }
+
+node|z18-.bench { icon-width: 18 }
+node|z17.bench { icon-width: 16 }
+node|z16.bench { icon-width: 14 }
+node|z15.bench { icon-width: 12 }
+node|z14.bench { icon-width: 10 }
+node|z13.bench { icon-width: 8 }
+node|z-12.bench { icon-width: 1 }
+
+node[leisure=firepit] {
+    set firepit;
+    text: name;
+    icon-image: "other/firepit.svg"
+    }
+
+node|z18-.firepit { icon-width: 18 }
+node|z17.firepit { icon-width: 16 }
+node|z16.firepit { icon-width: 14 }
+node|z15.firepit { icon-width: 12 }
+node|z14.firepit { icon-width: 10 }
+node|z13.firepit { icon-width: 8 }
+node|z-12.firepit { icon-width: 1 }
+
+
+/* ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ net of rides ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ */
+
+way[!railway][!power][!highway][!waterway] { set blankway }
+
+
+way.blankway[man_made=cutline][cutline=~/section|firebreak|border/] {
+    width: 2;
+    z-index: 6;
+    color: cutline#99ff55
+}
+
+way.blankway[man_made=cutline][!highway][!railway][!power][!waterway][cutline!~/section|firebreak|border/] {
+    width: 1.25;
+    color: cutline#99ff55
+}
+
+way.blankway[man_made=cutline][cutline=logway],
+way.blankway[man_made=logway] {
+    width: 1.25;
+    dashes: 9,3;
+    z-index: 6;
+    color: cutline#99ff55
+}
+
+area[boundary=~/forestry|forestry_compartment|forest_compartment/] > way.blankway[!man_made],
+way.blankway[boundary=~/forestry|forestry_compartment|forest_compartment/][!man_made] {
+    width: 1.75;
+    dashes: 2,6;
+    z-index: 6;
+    color: cutline#99ff55
+}
+
+way.blankway[barrier=furrow][!man_made]!:selected, 
+way.blankway[barrier=furrow][man_made] {
+    repeat-image: "other/furrow.svg";
+    z-index: 7;
+}
+
+area[boundary=~/forestry|forestry_compartment|forest_compartment/] {
+    fill-color: cutline#99ff55;
+    fill-opacity: 0;
+    text: ref;
+    text-position: ;
+    text-color: #77dd44;
+    font-size: 10;
+    font-weight: bold;
+    font-style: italic;
+    text-halo-opacity: 0.5;
+    text-halo-radius: 0.25;
+    text-halo-color: #ffffff;
+    z-index: 9
+}
+
+
+/* ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ plain fills & strokes ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡= */
+
+area[setting("invisible_fill")]{
+    fill-opacity: 0.0
+}
+
+
+area[landuse=food_plot][!setting("invisible_fill")],
+area[landuse=food_plot][!setting("invisible_fill")] > way.blankway[!man_made][!barrier] {
+    fill-opacity: 0.15;
+    fill-color: #c6a664;
+    color: #c6a664;
+    width: 1
+}
+
+area|z14-[natural=~/grassland|heath/][!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13[natural=~/grassland|heath/][!setting("invisible_fill")] {
+    fill-opacity: 0.07;
+    fill-color: #78c178
+}
+
+area[natural=~/grassland|heath/],
+area[natural=~/grassland|heath/] > way.blankway[!man_made][!barrier] {
+    color: #78c178;
+    width: 1
+}
+
+
+area|z14-[natural=scrub][!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13[natural=scrub][!setting("invisible_fill")] {
+    fill-opacity: 0.07;
+    fill-color: #60b660
+}
+
+area|z14-[natural=wetland][!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13[natural=wetland][!setting("invisible_fill")] {
+    fill-opacity: 0.07;
+    fill-color: #8080c0
+}
+
+area[landuse=logging],
+area[natural=~/wetland|scrub/],
+area[landuse=logging] > way.blankway[!man_made][!barrier],
+area[natural=~/wetland|scrub/] > way.blankway[!man_made][!barrier] {
+    width: 1;
+    color: #60b660;
+}
+
+
+area|z14-[wood:lost][!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13[wood:lost][!setting("invisible_fill")] {
+    fill-opacity: 0.07;
+    fill-color: #89a02c
+}
+
+area[wood:lost],
+area[wood:lost] > way.blankway[!man_made][!barrier] {
+    color: #89a02c;
+    width: 1
+}
+
+area|z14-[wood:damage][!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13[wood:damage][!setting("invisible_fill")] {
+    fill-opacity: 0.2;
+    fill-color: #105510
+}
+
+area[wood:damage],
+area[wood:damage] > way.blankway[!man_made][!barrier] {
+    color: #105510;
+    width: 1
+}
+
+area[natural=wood][!wood:lost][!wood:damage],
+area[landuse=forest][!wood:lost][!wood:damage],
+area[/^wood:/][!wood:lost][!wood:damage] {
+    set forest;
+    fill-color: #008000;
+    width: 1
+}
+
+area|z14-.forest[!setting("invisible_fill")][!setting("hide_pattern")],
+area|z-13.forest[!setting("invisible_fill")] {
+    fill-opacity: 0.2;
+    fill-color: #105510
+}
+
+area[natural=wood][!wood:lost][!wood:damage] > way.blankway[!man_made][!barrier],
+area[landuse=forest][!wood:lost][!wood:damage] > way.blankway[!man_made][!barrier],
+area[/^wood:/][!wood:lost][!wood:damage] > way.blankway[!man_made][!barrier] {
+    color: #105510;
+    width: 1;
+}
+
+
+/* ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ pattern fills ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡ */
+
+/* ==================== non-wooded areas ==================== */
+
+area|z14-[natural=grassland][!landuse][!/^wood:/][setting("hide_pattern")] {
+    fill-image: "non-wooded/grass.svg";
+    z-index: 2
+}
+
+area|z14-[natural=heath][!landuse][!/^wood:/][setting("hide_pattern")]   {
+    fill-image: "non-wooded/heath.svg";
+    z-index: 2
+}
+
+area|z14-[natural=scrub][!landuse][setting("hide_pattern")] {
+    fill-image: "non-wooded/scrub.svg";
+    z-index: 2
+}
+
+area|z12-[natural=wetland][setting("hide_pattern")] {
+    fill-image: "non-wooded/wetland.svg";
+    z-index: 1
+}
+
+/* ==================== partly wooded areas ==================== */
+
+/* ------------------- cutting area -------------------- */
+
+area|z14-[landuse=logging][logging!=selective_cutting][setting("hide_pattern")] {
+    fill-image: "non-wooded/logging.svg";
+    z-index: 5
+}
+
+area|z14-[landuse=logging][logging=selective_cutting][setting("hide_pattern")] {
+    fill-image: "non-wooded/loggingpart.svg";
+    z-index: 5
+}
+
+/* ------------------- dead forest -------------------- */
+
+area|z14-[wood:lost=windfall][setting("hide_pattern")] {
+    fill-image: "non-wooded/windfall.svg";
+    z-index: 5
+}
+
+area|z14-[wood:lost=dead_wood][setting("hide_pattern")] {
+    fill-image: "non-wooded/deadwood.svg";
+    z-index: 5
+}
+
+area|z14-[wood:lost=burnt][setting("hide_pattern")] {
+    fill-image: "non-wooded/burntwood.svg";
+    z-index: 5
+}
+
+/* ------------------- partly windfall forest -------------------- */
+
+area|z14-[wood:damage=windfall][leaf_type=needleleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/windfallpartc.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=windfall][leaf_type=broadleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/windfallpartd.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=windfall][leaf_type=mixed][setting("hide_pattern")] {
+    fill-image: "damaged-all/windfallpartm.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=windfall][!leaf_type][setting("hide_pattern")] {
+    fill-image: "damaged-all/windfallpartu.svg";
+    z-index: 5
+}
+
+/* ------------------- partly dried forest -------------------- */
+
+area|z14-[wood:damage=dead_wood][wood:flaw!=stunted][leaf_type=needleleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadwoodpartc.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=dead_wood][wood:flaw!=stunted][leaf_type=broadleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadwoodpartd.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=dead_wood][wood:flaw!=stunted][leaf_type=mixed][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadwoodpartm.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=dead_wood][wood:flaw!=stunted][!leaf_type][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadwoodpartu.svg";
+    z-index: 5
+}
+
+/* ------------------- partly dried stunted forest -------------------- */
+
+area|z14-[wood:damage=dead_wood][wood:flaw=stunted][leaf_type=needleleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadswoodpartc.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=dead_wood][wood:flaw=stunted][leaf_type=broadleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadswoodpartd.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=dead_wood][wood:flaw=stunted][!leaf_type][setting("hide_pattern")],
+area|z14-[wood:damage=dead_wood][wood:flaw=stunted][leaf_type=mixed][setting("hide_pattern")] {
+    fill-image: "damaged-all/deadswoodpartu.svg";
+    z-index: 5
+}
+
+/* ------------------- partly burnt forest -------------------- */
+
+area|z14-[wood:damage=burnt][leaf_type=needleleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/burntwoodpartc.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=burnt][leaf_type=broadleaved][setting("hide_pattern")] {
+    fill-image: "damaged-all/burntwoodpartd.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=burnt][leaf_type=mixed][setting("hide_pattern")] {
+    fill-image: "damaged-all/burntwoodpartm.svg";
+    z-index: 5
+}
+
+area|z14-[wood:damage=burnt][!leaf_type][setting("hide_pattern")] {
+    fill-image: "damaged-all/burntwoodpartu.svg";
+    z-index: 5
+}
+
+/* ==================== common forest ==================== */
+
+area|z14-.forest[wood:origin!=man_made][!wood:flaw][setting("hide_pattern")] { set wood; color: #008000; z-index: 3 }
+
+/* ------------------- common - coniferous -------------------- */
+
+area.wood[leaf_type=needleleaved][leaf_cycle!=deciduous] { set woodc; }
+
+area.woodc[wood:age=old] { set woodcv; }
+
+area.woodcv[wood:density=dense] {
+    fill-image: "common-coniferous/woodcv10.svg"
+}
+
+area.woodcv[!wood:density],
+area.woodcv[wood:density=normal] {
+    fill-image: "common-coniferous/woodcv08.svg"
+}
+
+area.woodcv[wood:density=middle] {
+    fill-image: "common-coniferous/woodcv06.svg"
+}
+
+area.woodcv[wood:density=sparse] {
+    fill-image: "common-coniferous/woodcv04.svg"
+}
+area.woodcv[wood:density=very_sparse] {
+    fill-image: "common-coniferous/woodcv02.svg"
+}
+
+area.woodc[wood:age=adult] { set woodciv; }
+area.woodc[!wood:age] { set woodciv; }
+
+area.woodciv[wood:density=dense] {
+    fill-image: "common-coniferous/woodciv10.svg"
+}
+
+area.woodciv[wood:density=normal],
+area.woodciv[!wood:density] {
+    fill-image: "common-coniferous/woodciv08.svg"
+}
+
+area.woodciv[wood:density=middle] {
+    fill-image: "common-coniferous/woodciv06.svg"
+}
+
+area.woodciv[wood:density=sparse] {
+    fill-image: "common-coniferous/woodciv04.svg"
+}
+
+area.woodciv[wood:density=very_sparse] {
+    fill-image: "common-coniferous/woodciv02.svg"
+}
+
+area.woodc[wood:age=middle] { set woodciii; }
+
+area.woodciii[wood:density=dense] {
+    fill-image: "common-coniferous/woodciii10.svg"
+}
+
+area.woodciii[wood:density=normal],
+area.woodciii[!wood:density] {
+    fill-image: "common-coniferous/woodciii08.svg"
+}
+
+area.woodciii[wood:density=middle] {
+    fill-image: "common-coniferous/woodciii06.svg"
+}
+
+area.woodciii[wood:density=sparse] {
+    fill-image: "common-coniferous/woodciii04.svg"
+}
+
+area.woodciii[wood:density=very_sparse] {
+    fill-image: "common-coniferous/woodciii02.svg"
+}
+
+area.woodc[wood:age=young] { set woodcii; }
+
+area.woodcii[wood:density=dense] {
+    fill-image: "common-coniferous/woodcii10.svg"
+}
+
+area.woodcii[wood:density=normal],
+area.woodcii[!wood:density] {
+    fill-image: "common-coniferous/woodcii08.svg"
+}
+
+area.woodcii[wood:density=middle] {
+    fill-image: "common-coniferous/woodcii06.svg"
+}
+
+area.woodcii[wood:density=sparse] {
+    fill-image: "common-coniferous/woodcii04.svg"
+}
+
+area.woodcii[wood:density=very_sparse] {
+    fill-image: "common-coniferous/woodcii02.svg"
+}
+
+area.woodc[wood:age=very_young] { set woodci; }
+
+area.woodci[wood:density=dense] {
+    fill-image: "common-coniferous/woodci10.svg"
+}
+
+area.woodci[wood:density=normal],
+area.woodci[!wood:density] {
+    fill-image: "common-coniferous/woodci08.svg"
+}
+
+area.woodci[wood:density=middle] {
+    fill-image: "common-coniferous/woodci06.svg"
+}
+
+area.woodci[wood:density=sparse] {
+    fill-image: "common-coniferous/woodci04.svg"
+}
+
+area.woodci[wood:density=very_sparse] {
+    fill-image: "common-coniferous/woodci02.svg"
+}
+
+/* ------------------- common - larix -------------------- */
+
+area.wood[leaf_type=needleleaved][leaf_cycle=deciduous] { set woodl; }
+
+area.woodl[wood:age=old] { set woodlv; }
+
+area.woodlv[wood:density=dense] {
+    fill-image: "common-larix/woodlv10.svg"
+}
+
+area.woodlv[wood:density=normal],
+area.woodlv[!wood:density] {
+    fill-image: "common-larix/woodlv08.svg"
+}
+
+area.woodlv[wood:density=middle] {
+    fill-image: "common-larix/woodlv06.svg"
+}
+
+area.woodlv[wood:density=sparse] {
+    fill-image: "common-larix/woodlv04.svg"
+}
+area.woodlv[wood:density=very_sparse] {
+    fill-image: "common-larix/woodlv02.svg"
+}
+
+area.woodl[wood:age=adult] { set woodliv; }
+area.woodl[!wood:age] { set woodliv; }
+
+area.woodliv[wood:density=dense] {
+    fill-image: "common-larix/woodliv10.svg"
+}
+
+area.woodliv[wood:density=normal],
+area.woodliv[!wood:density] {
+    fill-image: "common-larix/woodliv08.svg"
+}
+
+area.woodliv[wood:density=middle] {
+    fill-image: "common-larix/woodliv06.svg"
+}
+
+area.woodliv[wood:density=sparse] {
+    fill-image: "common-larix/woodliv04.svg"
+}
+
+area.woodliv[wood:density=very_sparse] {
+    fill-image: "common-larix/woodliv02.svg"
+}
+
+area.woodl[wood:age=middle] { set woodliii; }
+
+area.woodliii[wood:density=dense] {
+    fill-image: "common-larix/woodliii10.svg"
+}
+
+area.woodliii[wood:density=normal],
+area.woodliii[!wood:density] {
+    fill-image: "common-larix/woodliii08.svg"
+}
+
+area.woodliii[wood:density=middle] {
+    fill-image: "common-larix/woodliii06.svg"
+}
+
+area.woodliii[wood:density=sparse] {
+    fill-image: "common-larix/woodliii04.svg"
+}
+
+area.woodliii[wood:density=very_sparse] {
+    fill-image: "common-larix/woodliii02.svg"
+}
+
+area.woodl[wood:age=young] { set woodlii; }
+
+area.woodlii[wood:density=dense] {
+    fill-image: "common-larix/woodlii10.svg"
+}
+
+area.woodlii[wood:density=normal],
+area.woodlii[!wood:density] {
+    fill-image: "common-larix/woodlii08.svg"
+}
+
+area.woodlii[wood:density=middle] {
+    fill-image: "common-larix/woodlii06.svg"
+}
+
+area.woodlii[wood:density=sparse] {
+    fill-image: "common-larix/woodlii04.svg"
+}
+
+area.woodlii[wood:density=very_sparse] {
+    fill-image: "common-larix/woodlii02.svg"
+}
+
+area.woodl[wood:age=very_young] { set woodli; }
+
+area.woodli[wood:density=dense] {
+    fill-image: "common-larix/woodli10.svg"
+}
+
+area.woodli[wood:density=normal],
+area.woodli[!wood:density] {
+    fill-image: "common-larix/woodli08.svg"
+}
+
+area.woodli[wood:density=middle] {
+    fill-image: "common-larix/woodli06.svg"
+}
+
+area.woodli[wood:density=sparse] {
+    fill-image: "common-larix/woodli04.svg"
+}
+
+area.woodli[wood:density=very_sparse] {
+    fill-image: "common-larix/woodli02.svg"
+}
+
+/* ------------------- common - deciduous -------------------- */
+
+area.wood[leaf_type=broadleaved][leaf_cycle!=evergreen] { set woodd; }
+
+area.wood[!leaf_type][leaf_cycle!=evergreen] { set woodd; }
+
+area.woodd[wood:age=old] { set wooddv; }
+
+area.wooddv[wood:density=dense] {
+    fill-image: "common-deciduous/wooddv10.svg"
+}
+
+area.wooddv[wood:density=normal],
+area.wooddv[!wood:density] {
+    fill-image: "common-deciduous/wooddv08.svg"
+}
+
+area.wooddv[wood:density=middle] {
+    fill-image: "common-deciduous/wooddv06.svg"
+}
+
+area.wooddv[wood:density=sparse] {
+    fill-image: "common-deciduous/wooddv04.svg"
+}
+area.wooddv[wood:density=very_sparse] {
+    fill-image: "common-deciduous/wooddv02.svg"
+}
+
+area.woodd[wood:age=adult] { set wooddiv; }
+area.woodd[!wood:age] { set wooddiv; }
+
+area.wooddiv[wood:density=dense],
+area.woodd[!wood:age][wood:density=dense] {
+    fill-image: "common-deciduous/wooddiv10.svg"
+}
+
+area.wooddiv[wood:density=normal],
+area.wooddiv[!wood:density] {
+    fill-image: "common-deciduous/wooddiv08.svg"
+}
+
+area.wooddiv[wood:density=middle] {
+    fill-image: "common-deciduous/wooddiv06.svg"
+}
+
+area.wooddiv[wood:density=sparse] {
+    fill-image: "common-deciduous/wooddiv04.svg"
+}
+
+area.wooddiv[wood:density=very_sparse] {
+    fill-image: "common-deciduous/wooddiv02.svg"
+}
+
+area.woodd[wood:age=middle] { set wooddiii; }
+
+area.wooddiii[wood:density=dense] {
+    fill-image: "common-deciduous/wooddiii10.svg"
+}
+
+area.wooddiii[wood:density=normal],
+area.wooddiii[!wood:density] {
+    fill-image: "common-deciduous/wooddiii08.svg"
+}
+
+area.wooddiii[wood:density=middle] {
+    fill-image: "common-deciduous/wooddiii06.svg"
+}
+
+area.wooddiii[wood:density=sparse] {
+    fill-image: "common-deciduous/wooddiii04.svg"
+}
+
+area.wooddiii[wood:density=very_sparse] {
+    fill-image: "common-deciduous/wooddiii02.svg"
+}
+
+area.woodd[wood:age=young] { set wooddii; }
+
+area.wooddii[wood:density=dense] {
+    fill-image: "common-deciduous/wooddii10.svg"
+}
+
+area.wooddii[wood:density=normal],
+area.wooddii[!wood:density] {
+    fill-image: "common-deciduous/wooddii08.svg"
+}
+
+area.wooddii[wood:density=middle] {
+    fill-image: "common-deciduous/wooddii06.svg"
+}
+
+area.wooddii[wood:density=sparse] {
+    fill-image: "common-deciduous/wooddii04.svg"
+}
+
+area.wooddii[wood:density=very_sparse] {
+    fill-image: "common-deciduous/wooddii02.svg"
+}
+
+area.woodd[wood:age=very_young] { set wooddi; }
+
+area.wooddi[wood:density=dense] {
+    fill-image: "common-deciduous/wooddi10.svg"
+}
+
+area.wooddi[wood:density=normal],
+area.wooddi[!wood:density] {
+    fill-image: "common-deciduous/wooddi08.svg"
+}
+
+area.wooddi[wood:density=middle] {
+    fill-image: "common-deciduous/wooddi06.svg"
+}
+
+area.wooddi[wood:density=sparse] {
+    fill-image: "common-deciduous/wooddi04.svg"
+}
+
+area.wooddi[wood:density=very_sparse] {
+    fill-image: "common-deciduous/wooddi02.svg"
+}
+
+/* ------------------- common - tropical -------------------- */
+
+area.wood[leaf_type=broadleaved][leaf_cycle=evergreen] { set woodt; }
+
+area.woodt[wood:age=old] { set woodtv; }
+
+area.woodtv[wood:density=dense] {
+    fill-image: "common-tropical/woodtv10.svg"
+}
+
+area.woodtv[wood:density=normal],
+area.woodtv[!wood:density] {
+    fill-image: "common-tropical/woodtv08.svg"
+}
+
+area.woodtv[wood:density=middle] {
+    fill-image: "common-tropical/woodtv06.svg"
+}
+
+area.woodtv[wood:density=sparse] {
+    fill-image: "common-tropical/woodtv04.svg"
+}
+area.woodtv[wood:density=very_sparse] {
+    fill-image: "common-tropical/woodtv02.svg"
+}
+
+area.woodt[wood:age=adult] { set woodtiv; }
+area.woodt[!wood:age] { set woodtiv; }
+
+area.woodtiv[wood:density=dense] {
+    fill-image: "common-tropical/woodtiv10.svg"
+}
+
+area.woodtiv[wood:density=normal],
+area.woodtiv[!wood:density] {
+    fill-image: "common-tropical/woodtiv08.svg"
+}
+
+area.woodtiv[wood:density=middle] {
+    fill-image: "common-tropical/woodtiv06.svg"
+}
+
+area.woodtiv[wood:density=sparse] {
+    fill-image: "common-tropical/woodtiv04.svg"
+}
+
+area.woodtiv[wood:density=very_sparse] {
+    fill-image: "common-tropical/woodtiv02.svg"
+}
+
+area.woodt[wood:age=middle] { set woodtiii; }
+
+area.woodtiii[wood:density=dense] {
+    fill-image: "common-tropical/woodtiii10.svg"
+}
+
+area.woodtiii[wood:density=normal],
+area.woodtiii[!wood:density] {
+    fill-image: "common-tropical/woodtiii08.svg"
+}
+
+area.woodtiii[wood:density=middle] {
+    fill-image: "common-tropical/woodtiii06.svg"
+}
+
+area.woodtiii[wood:density=sparse] {
+    fill-image: "common-tropical/woodtiii04.svg"
+}
+
+area.woodtiii[wood:density=very_sparse] {
+    fill-image: "common-tropical/woodtiii02.svg"
+}
+
+area.woodt[wood:age=young] { set woodtii; }
+
+area.woodtii[wood:density=dense] {
+    fill-image: "common-tropical/woodtii10.svg"
+}
+
+area.woodtii[wood:density=normal],
+area.woodtii[!wood:density] {
+    fill-image: "common-tropical/woodtii08.svg"
+}
+
+area.woodtii[wood:density=middle] {
+    fill-image: "common-tropical/woodtii06.svg"
+}
+
+area.woodtii[wood:density=sparse] {
+    fill-image: "common-tropical/woodtii04.svg"
+}
+
+area.woodtii[wood:density=very_sparse] {
+    fill-image: "common-tropical/woodtii02.svg"
+}
+
+area.woodt[wood:age=very_young] { set woodti; }
+
+area.woodti[wood:density=dense] {
+    fill-image: "common-tropical/woodti10.svg"
+}
+
+area.woodti[wood:density=normal],
+area.woodti[!wood:density] {
+    fill-image: "common-tropical/woodti08.svg"
+}
+
+area.woodti[wood:density=middle] {
+    fill-image: "common-tropical/woodti06.svg"
+}
+
+area.woodti[wood:density=sparse] {
+    fill-image: "common-tropical/woodti04.svg"
+}
+
+area.woodti[wood:density=very_sparse] {
+    fill-image: "common-tropical/woodti02.svg"
+}
+
+/* ------------------- common - mixed -------------------- */
+
+area.wood[leaf_type=mixed] { set woodm; }
+
+area.woodm[wood:age=old] { set woodmv; }
+
+area.woodmv[wood:density=dense] {
+    fill-image: "common-mixed/woodmv10.svg"
+}
+
+area.woodmv[wood:density=normal],
+area.woodmv[!wood:density] {
+    fill-image: "common-mixed/woodmv08.svg"
+}
+
+area.woodmv[wood:density=middle] {
+    fill-image: "common-mixed/woodmv06.svg"
+}
+
+area.woodmv[wood:density=sparse] {
+    fill-image: "common-mixed/woodmv04.svg"
+}
+area.woodmv[wood:density=very_sparse] {
+    fill-image: "common-mixed/woodmv02.svg"
+}
+
+area.woodm[wood:age=adult] { set woodmiv; }
+area.woodm[!wood:age] { set woodmiv; }
+
+area.woodmiv[wood:density=dense] {
+    fill-image: "common-mixed/woodmiv10.svg"
+}
+
+area.woodmiv[wood:density=normal],
+area.woodmiv[!wood:density] {
+    fill-image: "common-mixed/woodmiv08.svg"
+}
+
+area.woodmiv[wood:density=middle] {
+    fill-image: "common-mixed/woodmiv06.svg"
+}
+
+area.woodmiv[wood:density=sparse] {
+    fill-image: "common-mixed/woodmiv04.svg"
+}
+
+area.woodmiv[wood:density=very_sparse] {
+    fill-image: "common-mixed/woodmiv02.svg"
+}
+
+area.woodm[wood:age=middle] { set woodmiii; }
+
+area.woodmiii[wood:density=dense] {
+    fill-image: "common-mixed/woodmiii10.svg"
+}
+
+area.woodmiii[wood:density=normal],
+area.woodmiii[!wood:density] {
+    fill-image: "common-mixed/woodmiii08.svg"
+}
+
+area.woodmiii[wood:density=middle] {
+    fill-image: "common-mixed/woodmiii06.svg"
+}
+
+area.woodmiii[wood:density=sparse] {
+    fill-image: "common-mixed/woodmiii04.svg"
+}
+
+area.woodmiii[wood:density=very_sparse] {
+    fill-image: "common-mixed/woodmiii02.svg"
+}
+
+area.woodm[wood:age=young] { set woodmii; }
+
+area.woodmii[wood:density=dense] {
+    fill-image: "common-mixed/woodmii10.svg"
+}
+
+area.woodmii[wood:density=normal],
+area.woodmii[!wood:density] {
+    fill-image: "common-mixed/woodmii08.svg"
+}
+
+area.woodmii[wood:density=middle] {
+    fill-image: "common-mixed/woodmii06.svg"
+}
+
+area.woodmii[wood:density=sparse] {
+    fill-image: "common-mixed/woodmii04.svg"
+}
+
+area.woodmii[wood:density=very_sparse] {
+    fill-image: "common-mixed/woodmii02.svg"
+}
+
+area.woodm[wood:age=very_young] { set woodmi; }
+
+area.woodmi[wood:density=dense] {
+    fill-image: "common-mixed/woodmi10.svg"
+}
+
+area.woodmi[wood:density=normal],
+area.woodmi[!wood:density] {
+    fill-image: "common-mixed/woodmi08.svg"
+}
+
+area.woodmi[wood:density=middle] {
+    fill-image: "common-mixed/woodmi06.svg"
+}
+
+area.woodmi[wood:density=sparse] {
+    fill-image: "common-mixed/woodmi04.svg"
+}
+
+area.woodmi[wood:density=very_sparse] {
+    fill-image: "common-mixed/woodmi02.svg"
+}
+
+/* ------------------- common - undefined -------------------- */
+
+area.wood[!leaf_type][!leaf_cycle] { set woodu; }
+
+area.woodu[wood:age=old] { set wooduv; }
+
+area.wooduv[wood:density=dense] {
+    fill-image: "common-undefined/wooduv10.svg"
+}
+
+area.wooduv[wood:density=normal],
+area.wooduv[!wood:density] {
+    fill-image: "common-undefined/wooduv08.svg"
+}
+
+area.wooduv[wood:density=middle] {
+    fill-image: "common-undefined/wooduv06.svg"
+}
+
+area.wooduv[wood:density=sparse] {
+    fill-image: "common-undefined/wooduv04.svg"
+}
+area.wooduv[wood:density=very_sparse] {
+    fill-image: "common-undefined/wooduv02.svg"
+}
+
+area.woodu[wood:age=adult] { set wooduiv; }
+area.woodu[!wood:age] { set wooduiv; }
+
+area.wooduiv[wood:density=dense] {
+    fill-image: "common-undefined/wooduiv10.svg"
+}
+
+area.wooduiv[wood:density=normal],
+area.wooduiv[!wood:density] {
+    fill-image: "common-undefined/wooduiv08.svg"
+}
+
+area.wooduiv[wood:density=middle] {
+    fill-image: "common-undefined/wooduiv06.svg"
+}
+
+area.wooduiv[wood:density=sparse] {
+    fill-image: "common-undefined/wooduiv04.svg"
+}
+
+area.wooduiv[wood:density=very_sparse] {
+    fill-image: "common-undefined/wooduiv02.svg"
+}
+
+area.woodu[wood:age=middle] { set wooduiii; }
+
+area.wooduiii[wood:density=dense] {
+    fill-image: "common-undefined/wooduiii10.svg"
+}
+
+area.wooduiii[wood:density=normal],
+area.wooduiii[!wood:density] {
+    fill-image: "common-undefined/wooduiii08.svg"
+}
+
+area.wooduiii[wood:density=middle] {
+    fill-image: "common-undefined/wooduiii06.svg"
+}
+
+area.wooduiii[wood:density=sparse] {
+    fill-image: "common-undefined/wooduiii04.svg"
+}
+
+area.wooduiii[wood:density=very_sparse] {
+    fill-image: "common-undefined/wooduiii02.svg"
+}
+
+area.woodu[wood:age=young] { set wooduii; }
+
+area.wooduii[wood:density=dense] {
+    fill-image: "common-undefined/wooduii10.svg"
+}
+
+area.wooduii[wood:density=normal],
+area.wooduii[!wood:density] {
+    fill-image: "common-undefined/wooduii08.svg"
+}
+
+area.wooduii[wood:density=middle] {
+    fill-image: "common-undefined/wooduii06.svg"
+}
+
+area.wooduii[wood:density=sparse] {
+    fill-image: "common-undefined/wooduii04.svg"
+}
+
+area.wooduii[wood:density=very_sparse] {
+    fill-image: "common-undefined/wooduii02.svg"
+}
+
+area.woodu[wood:age=very_young] { set woodui; }
+
+area.woodui[wood:density=dense] {
+    fill-image: "common-undefined/woodui10.svg"
+}
+
+area.woodui[wood:density=normal],
+area.woodui[!wood:density] {
+    fill-image: "common-undefined/woodui08.svg"
+}
+
+area.woodui[wood:density=middle] {
+    fill-image: "common-undefined/woodui06.svg"
+}
+
+area.woodui[wood:density=sparse] {
+    fill-image: "common-undefined/woodui04.svg"
+}
+
+area.woodui[wood:density=very_sparse] {
+    fill-image: "common-undefined/woodui02.svg"
+}
+
+/* ==================== artificial forest ==================== */
+
+area|z14-.forest[wood:origin=man_made][!wood:flaw][setting("hide_pattern")] { set mwood; color: #008000; z-index: 3 }
+
+/* ------------------- artificial - coniferous -------------------- */
+
+area.mwood[leaf_type=needleleaved][leaf_cycle!=deciduous] { set mwoodc; }
+
+area.mwoodc[wood:age=old] { set mwoodcv; }
+
+area.mwoodcv[wood:density=dense],
+area.mwoodcv[!wood:density] {
+    fill-image: "manmade-coniferous/mwoodcv10.svg"
+}
+
+area.mwoodcv[wood:density=normal] {
+    fill-image: "manmade-coniferous/mwoodcv08.svg"
+}
+
+area.mwoodcv[wood:density=middle] {
+    fill-image: "manmade-coniferous/mwoodcv06.svg"
+}
+
+area.mwoodcv[wood:density=sparse] {
+    fill-image: "manmade-coniferous/mwoodcv04.svg"
+}
+area.mwoodcv[wood:density=very_sparse] {
+    fill-image: "manmade-coniferous/mwoodcv02.svg"
+}
+
+area.mwoodc[wood:age=adult] { set mwoodciv; }
+area.mwoodc[!wood:age] { set mwoodciv; }
+
+area.mwoodciv[wood:density=dense] {
+    fill-image: "manmade-coniferous/mwoodciv10.svg"
+}
+
+area.mwoodciv[wood:density=normal],
+area.mwoodciv[!wood:density] {
+    fill-image: "manmade-coniferous/mwoodciv08.svg"
+}
+
+area.mwoodciv[wood:density=middle] {
+    fill-image: "manmade-coniferous/mwoodciv06.svg"
+}
+
+area.mwoodciv[wood:density=sparse] {
+    fill-image: "manmade-coniferous/mwoodciv04.svg"
+}
+
+area.mwoodciv[wood:density=very_sparse] {
+    fill-image: "manmade-coniferous/mwoodciv02.svg"
+}
+
+area.mwoodc[wood:age=middle] { set mwoodciii; }
+
+area.mwoodciii[wood:density=dense] {
+    fill-image: "manmade-coniferous/mwoodciii10.svg"
+}
+
+area.mwoodciii[wood:density=normal],
+area.mwoodciii[!wood:density] {
+    fill-image: "manmade-coniferous/mwoodciii08.svg"
+}
+
+area.mwoodciii[wood:density=middle] {
+    fill-image: "manmade-coniferous/mwoodciii06.svg"
+}
+
+area.mwoodciii[wood:density=sparse] {
+    fill-image: "manmade-coniferous/mwoodciii04.svg"
+}
+
+area.mwoodciii[wood:density=very_sparse] {
+    fill-image: "manmade-coniferous/mwoodciii02.svg"
+}
+
+area.mwoodc[wood:age=young] { set mwoodcii; }
+
+area.mwoodcii[wood:density=dense] {
+    fill-image: "manmade-coniferous/mwoodcii10.svg"
+}
+
+area.mwoodcii[wood:density=normal],
+area.mwoodcii[!wood:density] {
+    fill-image: "manmade-coniferous/mwoodcii08.svg"
+}
+
+area.mwoodcii[wood:density=middle] {
+    fill-image: "manmade-coniferous/mwoodcii06.svg"
+}
+
+area.mwoodcii[wood:density=sparse] {
+    fill-image: "manmade-coniferous/mwoodcii04.svg"
+}
+
+area.mwoodcii[wood:density=very_sparse] {
+    fill-image: "manmade-coniferous/mwoodcii02.svg"
+}
+
+area.mwoodc[wood:age=very_young] { set mwoodci; }
+
+area.mwoodci[wood:density=dense] {
+    fill-image: "manmade-coniferous/mwoodci10.svg"
+}
+
+area.mwoodci[wood:density=normal],
+area.mwoodci[!wood:density] {
+    fill-image: "manmade-coniferous/mwoodci08.svg"
+}
+
+area.mwoodci[wood:density=middle] {
+    fill-image: "manmade-coniferous/mwoodci06.svg"
+}
+
+area.mwoodci[wood:density=sparse] {
+    fill-image: "manmade-coniferous/mwoodci04.svg"
+}
+
+area.mwoodci[wood:density=very_sparse] {
+    fill-image: "manmade-coniferous/mwoodci02.svg"
+}
+
+/* ------------------- artificial - larix -------------------- */
+
+area.mwood[leaf_type=needleleaved][leaf_cycle=deciduous] { set mwoodl; }
+
+area.mwoodl[wood:age=old] { set mwoodlv; }
+
+area.mwoodlv[wood:density=dense] {
+    fill-image: "manmade-larix/mwoodlv10.svg"
+}
+
+area.mwoodlv[wood:density=normal],
+area.mwoodlv[!wood:density] {
+    fill-image: "manmade-larix/mwoodlv08.svg"
+}
+
+area.mwoodlv[wood:density=middle] {
+    fill-image: "manmade-larix/mwoodlv06.svg"
+}
+
+area.mwoodlv[wood:density=sparse] {
+    fill-image: "manmade-larix/mwoodlv04.svg"
+}
+area.mwoodlv[wood:density=very_sparse] {
+    fill-image: "manmade-larix/mwoodlv02.svg"
+}
+
+area.mwoodl[wood:age=adult] { set mwoodliv; }
+area.mwoodl[!wood:age] { set mwoodliv; }
+
+area.mwoodliv[wood:density=dense] {
+    fill-image: "manmade-larix/mwoodliv10.svg"
+}
+
+area.mwoodliv[wood:density=normal],
+area.mwoodliv[!wood:density] {
+    fill-image: "manmade-larix/mwoodliv08.svg"
+}
+
+area.mwoodliv[wood:density=middle] {
+    fill-image: "manmade-larix/mwoodliv06.svg"
+}
+
+area.mwoodliv[wood:density=sparse] {
+    fill-image: "manmade-larix/mwoodliv04.svg"
+}
+
+area.mwoodliv[wood:density=very_sparse] {
+    fill-image: "manmade-larix/mwoodliv02.svg"
+}
+
+area.mwoodl[wood:age=middle] { set mwoodliii; }
+
+area.mwoodliii[wood:density=dense] {
+    fill-image: "manmade-larix/mwoodliii10.svg"
+}
+
+area.mwoodliii[wood:density=normal],
+area.mwoodliii[!wood:density] {
+    fill-image: "manmade-larix/mwoodliii08.svg"
+}
+
+area.mwoodliii[wood:density=middle] {
+    fill-image: "manmade-larix/mwoodliii06.svg"
+}
+
+area.mwoodliii[wood:density=sparse] {
+    fill-image: "manmade-larix/mwoodliii04.svg"
+}
+
+area.mwoodliii[wood:density=very_sparse] {
+    fill-image: "manmade-larix/mwoodliii02.svg"
+}
+
+area.mwoodl[wood:age=young] { set mwoodlii; }
+
+area.mwoodlii[wood:density=dense] {
+    fill-image: "manmade-larix/mwoodlii10.svg"
+}
+
+area.mwoodlii[wood:density=normal],
+area.mwoodlii[!wood:density] {
+    fill-image: "manmade-larix/mwoodlii08.svg"
+}
+
+area.mwoodlii[wood:density=middle] {
+    fill-image: "manmade-larix/mwoodlii06.svg"
+}
+
+area.mwoodlii[wood:density=sparse] {
+    fill-image: "manmade-larix/mwoodlii04.svg"
+}
+
+area.mwoodlii[wood:density=very_sparse] {
+    fill-image: "manmade-larix/mwoodlii02.svg"
+}
+
+area.mwoodl[wood:age=very_young] { set mwoodli; }
+
+area.mwoodli[wood:density=dense] {
+    fill-image: "manmade-larix/mwoodli10.svg"
+}
+
+area.mwoodli[wood:density=normal],
+area.mwoodli[!wood:density] {
+    fill-image: "manmade-larix/mwoodli08.svg"
+}
+
+area.mwoodli[wood:density=middle] {
+    fill-image: "manmade-larix/mwoodli06.svg"
+}
+
+area.mwoodli[wood:density=sparse] {
+    fill-image: "manmade-larix/mwoodli04.svg"
+}
+
+area.mwoodli[wood:density=very_sparse] {
+    fill-image: "manmade-larix/mwoodli02.svg"
+}
+
+/* ------------------- artificial - deciduous -------------------- */
+
+area.mwood[leaf_type=broadleaved][leaf_cycle!=evergreen] { set mwoodd; }
+
+area.mwood[!leaf_type][leaf_cycle!=evergreen] { set mwoodd; }
+
+area.mwoodd[wood:age=old] { set mwooddv; }
+
+area.mwooddv[wood:density=dense] {
+    fill-image: "manmade-deciduous/mwooddv10.svg"
+}
+
+area.mwooddv[wood:density=normal],
+area.mwooddv[!wood:density] {
+    fill-image: "manmade-deciduous/mwooddv08.svg"
+}
+
+area.mwooddv[wood:density=middle] {
+    fill-image: "manmade-deciduous/mwooddv06.svg"
+}
+
+area.mwooddv[wood:density=sparse] {
+    fill-image: "manmade-deciduous/mwooddv04.svg"
+}
+area.mwooddv[wood:density=very_sparse] {
+    fill-image: "manmade-deciduous/mwooddv02.svg"
+}
+
+area.mwoodd[wood:age=adult] { set mwooddiv; }
+area.mwoodd[!wood:age] { set mwooddiv; }
+
+area.mwooddiv[wood:density=dense] {
+    fill-image: "manmade-deciduous/mwooddiv10.svg"
+}
+
+area.mwooddiv[wood:density=normal],
+area.mwooddiv[!wood:density] {
+    fill-image: "manmade-deciduous/mwooddiv08.svg"
+}
+
+area.mwooddiv[wood:density=middle] {
+    fill-image: "manmade-deciduous/mwooddiv06.svg"
+}
+
+area.mwooddiv[wood:density=sparse] {
+    fill-image: "manmade-deciduous/mwooddiv04.svg"
+}
+
+area.mwooddiv[wood:density=very_sparse] {
+    fill-image: "manmade-deciduous/mwooddiv02.svg"
+}
+
+area.mwoodd[wood:age=middle] { set mwooddiii; }
+
+area.mwooddiii[wood:density=dense] {
+    fill-image: "manmade-deciduous/mwooddiii10.svg"
+}
+
+area.mwooddiii[wood:density=normal],
+area.mwooddiii[!wood:density] {
+    fill-image: "manmade-deciduous/mwooddiii08.svg"
+}
+
+area.mwooddiii[wood:density=middle] {
+    fill-image: "manmade-deciduous/mwooddiii06.svg"
+}
+
+area.mwooddiii[wood:density=sparse] {
+    fill-image: "manmade-deciduous/mwooddiii04.svg"
+}
+
+area.mwooddiii[wood:density=very_sparse] {
+    fill-image: "manmade-deciduous/mwooddiii02.svg"
+}
+
+area.mwoodd[wood:age=young] { set mwooddii; }
+
+area.mwooddii[wood:density=dense] {
+    fill-image: "manmade-deciduous/mwooddii10.svg"
+}
+
+area.mwooddii[wood:density=normal],
+area.mwooddii[!wood:density] {
+    fill-image: "manmade-deciduous/mwooddii08.svg"
+}
+
+area.mwooddii[wood:density=middle] {
+    fill-image: "manmade-deciduous/mwooddii06.svg"
+}
+
+area.mwooddii[wood:density=sparse] {
+    fill-image: "manmade-deciduous/mwooddii04.svg"
+}
+
+area.mwooddii[wood:density=very_sparse] {
+    fill-image: "manmade-deciduous/mwooddii02.svg"
+}
+
+area.mwoodd[wood:age=very_young] { set mwooddi; }
+
+area.mwooddi[wood:density=dense] {
+    fill-image: "manmade-deciduous/mwooddi10.svg"
+}
+
+area.mwooddi[wood:density=normal],
+area.mwooddi[!wood:density] {
+    fill-image: "manmade-deciduous/mwooddi08.svg"
+}
+
+area.mwooddi[wood:density=middle] {
+    fill-image: "manmade-deciduous/mwooddi06.svg"
+}
+
+area.mwooddi[wood:density=sparse] {
+    fill-image: "manmade-deciduous/mwooddi04.svg"
+}
+
+area.mwooddi[wood:density=very_sparse] {
+    fill-image: "manmade-deciduous/mwooddi02.svg"
+}
+
+/* ------------------- artificial - tropical -------------------- */
+
+area.mwood[leaf_type=broadleaved][leaf_cycle=evergreen] { set mwoodt; }
+
+area.mwoodt[wood:age=old] { set mwoodtv; }
+
+area.mwoodtv[wood:density=dense] {
+    fill-image: "manmade-tropical/mwoodtv10.svg"
+}
+
+area.mwoodtv[wood:density=normal],
+area.mwoodtv[!wood:density] {
+    fill-image: "manmade-tropical/mwoodtv08.svg"
+}
+
+area.mwoodtv[wood:density=middle] {
+    fill-image: "manmade-tropical/mwoodtv06.svg"
+}
+
+area.mwoodtv[wood:density=sparse] {
+    fill-image: "manmade-tropical/mwoodtv04.svg"
+}
+area.mwoodtv[wood:density=very_sparse] {
+    fill-image: "manmade-tropical/mwoodtv02.svg"
+}
+
+area.mwoodt[wood:age=adult] { set mwoodtiv; }
+area.mwoodt[!wood:age] { set mwoodtiv; }
+
+area.mwoodtiv[wood:density=dense] {
+    fill-image: "manmade-tropical/mwoodtiv10.svg"
+}
+
+area.mwoodtiv[wood:density=normal],
+area.mwoodtiv[!wood:density] {
+    fill-image: "manmade-tropical/mwoodtiv08.svg"
+}
+
+area.mwoodtiv[wood:density=middle] {
+    fill-image: "manmade-tropical/mwoodtiv06.svg"
+}
+
+area.mwoodtiv[wood:density=sparse] {
+    fill-image: "manmade-tropical/mwoodtiv04.svg"
+}
+
+area.mwoodtiv[wood:density=very_sparse] {
+    fill-image: "manmade-tropical/mwoodtiv02.svg"
+}
+
+area.mwoodt[wood:age=middle] { set mwoodtiii; }
+
+area.mwoodtiii[wood:density=dense] {
+    fill-image: "manmade-tropical/mwoodtiii10.svg"
+}
+
+area.mwoodtiii[wood:density=normal],
+area.mwoodtiii[!wood:density] {
+    fill-image: "manmade-tropical/mwoodtiii08.svg"
+}
+
+area.mwoodtiii[wood:density=middle] {
+    fill-image: "manmade-tropical/mwoodtiii06.svg"
+}
+
+area.mwoodtiii[wood:density=sparse] {
+    fill-image: "manmade-tropical/mwoodtiii04.svg"
+}
+
+area.mwoodtiii[wood:density=very_sparse] {
+    fill-image: "manmade-tropical/mwoodtiii02.svg"
+}
+
+area.mwoodt[wood:age=young] { set mwoodtii; }
+
+area.mwoodtii[wood:density=dense] {
+    fill-image: "manmade-tropical/mwoodtii10.svg"
+}
+
+area.mwoodtii[wood:density=normal],
+area.mwoodtii[!wood:density] {
+    fill-image: "manmade-tropical/mwoodtii08.svg"
+}
+
+area.mwoodtii[wood:density=middle] {
+    fill-image: "manmade-tropical/mwoodtii06.svg"
+}
+
+area.mwoodtii[wood:density=sparse] {
+    fill-image: "manmade-tropical/mwoodtii04.svg"
+}
+
+area.mwoodtii[wood:density=very_sparse] {
+    fill-image: "manmade-tropical/mwoodtii02.svg"
+}
+
+area.mwoodt[wood:age=very_young] { set mwoodti; }
+
+area.mwoodti[wood:density=dense] {
+    fill-image: "manmade-tropical/mwoodti10.svg"
+}
+
+area.mwoodti[wood:density=normal],
+area.mwoodti[!wood:density] {
+    fill-image: "manmade-tropical/mwoodti08.svg"
+}
+
+area.mwoodti[wood:density=middle] {
+    fill-image: "manmade-tropical/mwoodti06.svg"
+}
+
+area.mwoodti[wood:density=sparse] {
+    fill-image: "manmade-tropical/mwoodti04.svg"
+}
+
+area.mwoodti[wood:density=very_sparse] {
+    fill-image: "manmade-tropical/mwoodti02.svg"
+}
+
+/* ------------------- artificial - mixed -------------------- */
+
+area.mwood[leaf_type=mixed] { set mwoodm; }
+
+area.mwoodm[wood:age=old] { set mwoodmv; }
+
+area.mwoodmv[wood:density=dense] {
+    fill-image: "manmade-mixed/mwoodmv10.svg"
+}
+
+area.mwoodmv[wood:density=normal],
+area.mwoodmv[!wood:density] {
+    fill-image: "manmade-mixed/mwoodmv08.svg"
+}
+
+area.mwoodmv[wood:density=middle] {
+    fill-image: "manmade-mixed/mwoodmv06.svg"
+}
+
+area.mwoodmv[wood:density=sparse] {
+    fill-image: "manmade-mixed/mwoodmv04.svg"
+}
+area.mwoodmv[wood:density=very_sparse] {
+    fill-image: "manmade-mixed/mwoodmv02.svg"
+}
+
+area.mwoodm[wood:age=adult] { set mwoodmiv; }
+area.mwoodm[!wood:age] { set mwoodmiv; }
+
+area.mwoodmiv[wood:density=dense] {
+    fill-image: "manmade-mixed/mwoodmiv10.svg"
+}
+
+area.mwoodmiv[wood:density=normal],
+area.mwoodmiv[!wood:density] {
+    fill-image: "manmade-mixed/mwoodmiv08.svg"
+}
+
+area.mwoodmiv[wood:density=middle] {
+    fill-image: "manmade-mixed/mwoodmiv06.svg"
+}
+
+area.mwoodmiv[wood:density=sparse] {
+    fill-image: "manmade-mixed/mwoodmiv04.svg"
+}
+
+area.mwoodmiv[wood:density=very_sparse] {
+    fill-image: "manmade-mixed/mwoodmiv02.svg"
+}
+
+area.mwoodm[wood:age=middle] { set mwoodmiii; }
+
+area.mwoodmiii[wood:density=dense] {
+    fill-image: "manmade-mixed/mwoodmiii10.svg"
+}
+
+area.mwoodmiii[wood:density=normal],
+area.mwoodmiii[!wood:density] {
+    fill-image: "manmade-mixed/mwoodmiii08.svg"
+}
+
+area.mwoodmiii[wood:density=middle] {
+    fill-image: "manmade-mixed/mwoodmiii06.svg"
+}
+
+area.mwoodmiii[wood:density=sparse] {
+    fill-image: "manmade-mixed/mwoodmiii04.svg"
+}
+
+area.mwoodmiii[wood:density=very_sparse] {
+    fill-image: "manmade-mixed/mwoodmiii02.svg"
+}
+
+area.mwoodm[wood:age=young] { set mwoodmii; }
+
+area.mwoodmii[wood:density=dense] {
+    fill-image: "manmade-mixed/mwoodmii10.svg"
+}
+
+area.mwoodmii[wood:density=normal],
+area.mwoodmii[!wood:density] {
+    fill-image: "manmade-mixed/mwoodmii08.svg"
+}
+
+area.mwoodmii[wood:density=middle] {
+    fill-image: "manmade-mixed/mwoodmii06.svg"
+}
+
+area.mwoodmii[wood:density=sparse] {
+    fill-image: "manmade-mixed/mwoodmii04.svg"
+}
+
+area.mwoodmii[wood:density=very_sparse] {
+    fill-image: "manmade-mixed/mwoodmii02.svg"
+}
+
+area.mwoodm[wood:age=very_young] { set mwoodmi; }
+
+area.mwoodmi[wood:density=dense] {
+    fill-image: "manmade-mixed/mwoodmi10.svg"
+}
+
+area.mwoodmi[wood:density=normal],
+area.mwoodmi[!wood:density] {
+    fill-image: "manmade-mixed/mwoodmi08.svg"
+}
+
+area.mwoodmi[wood:density=middle] {
+    fill-image: "manmade-mixed/mwoodmi06.svg"
+}
+
+area.mwoodmi[wood:density=sparse] {
+    fill-image: "manmade-mixed/mwoodmi04.svg"
+}
+
+area.mwoodmi[wood:density=very_sparse] {
+    fill-image: "manmade-mixed/mwoodmi02.svg"
+}
+
+/* ------------------- artificial - undefined -------------------- */
+
+area.mwood[!leaf_type][!leaf_cycle] { set mwoodu; }
+
+area.mwoodu[wood:age=old] { set mwooduv; }
+
+area.mwooduv[wood:density=dense] {
+    fill-image: "manmade-undefined/mwooduv10.svg"
+}
+
+area.mwooduv[wood:density=normal],
+area.mwooduv[!wood:density] {
+    fill-image: "manmade-undefined/mwooduv08.svg"
+}
+
+area.mwooduv[wood:density=middle] {
+    fill-image: "manmade-undefined/mwooduv06.svg"
+}
+
+area.mwooduv[wood:density=sparse] {
+    fill-image: "manmade-undefined/mwooduv04.svg"
+}
+area.mwooduv[wood:density=very_sparse] {
+    fill-image: "manmade-undefined/mwooduv02.svg"
+}
+
+area.mwoodu[wood:age=adult] { set mwooduiv; }
+area.mwoodu[!wood:age] { set mwooduiv; }
+
+area.mwooduiv[wood:density=dense] {
+    fill-image: "manmade-undefined/mwooduiv10.svg"
+}
+
+area.mwooduiv[wood:density=normal],
+area.mwooduiv[!wood:density] {
+    fill-image: "manmade-undefined/mwooduiv08.svg"
+}
+
+area.mwooduiv[wood:density=middle] {
+    fill-image: "manmade-undefined/mwooduiv06.svg"
+}
+
+area.mwooduiv[wood:density=sparse] {
+    fill-image: "manmade-undefined/mwooduiv04.svg"
+}
+
+area.mwooduiv[wood:density=very_sparse] {
+    fill-image: "manmade-undefined/mwooduiv02.svg"
+}
+
+area.mwoodu[wood:age=middle] { set mwooduiii; }
+
+area.mwooduiii[wood:density=dense] {
+    fill-image: "manmade-undefined/mwooduiii10.svg"
+}
+
+area.mwooduiii[wood:density=normal],
+area.mwooduiii[!wood:density] {
+    fill-image: "manmade-undefined/mwooduiii08.svg"
+}
+
+area.mwooduiii[wood:density=middle] {
+    fill-image: "manmade-undefined/mwooduiii06.svg"
+}
+
+area.mwooduiii[wood:density=sparse] {
+    fill-image: "manmade-undefined/mwooduiii04.svg"
+}
+
+area.mwooduiii[wood:density=very_sparse] {
+    fill-image: "manmade-undefined/mwooduiii02.svg"
+}
+
+area.mwoodu[wood:age=young] { set mwooduii; }
+
+area.mwooduii[wood:density=dense] {
+    fill-image: "manmade-undefined/mwooduii10.svg"
+}
+
+area.mwooduii[wood:density=normal],
+area.mwooduii[!wood:density] {
+    fill-image: "manmade-undefined/mwooduii08.svg"
+}
+
+area.mwooduii[wood:density=middle] {
+    fill-image: "manmade-undefined/mwooduii06.svg"
+}
+
+area.mwooduii[wood:density=sparse] {
+    fill-image: "manmade-undefined/mwooduii04.svg"
+}
+
+area.mwooduii[wood:density=very_sparse] {
+    fill-image: "manmade-undefined/mwooduii02.svg"
+}
+
+area.mwoodu[wood:age=very_young] { set mwoodui; }
+
+area.mwoodui[wood:density=dense] {
+    fill-image: "manmade-undefined/mwoodui10.svg"
+}
+
+area.mwoodui[wood:density=normal],
+area.mwoodui[!wood:density] {
+    fill-image: "manmade-undefined/mwoodui08.svg"
+}
+
+area.mwoodui[wood:density=middle] {
+    fill-image: "manmade-undefined/mwoodui06.svg"
+}
+
+area.mwoodui[wood:density=sparse] {
+    fill-image: "manmade-undefined/mwoodui04.svg"
+}
+
+area.mwoodui[wood:density=very_sparse] {
+    fill-image: "manmade-undefined/mwoodui02.svg"
+}
+
+
+/* ==================== krummholz forest ==================== */
+
+area|z14-.forest[wood:flaw=krummholz][setting("hide_pattern")] { set kwood; color: #008000; z-index: 3 }
+
+/* ------------------- krummholz - coniferous -------------------- */
+
+area.kwood[leaf_type=needleleaved][leaf_cycle!=deciduous] { set kwoodc; }
+
+area.kwoodc[wood:age=old] { set kwoodcv; }
+
+area.kwoodcv[wood:density=dense],
+area.kwoodcv[!wood:density] {
+    fill-image: "krummholz-coniferous/kwoodcv10.svg"
+}
+
+area.kwoodcv[wood:density=normal] {
+    fill-image: "krummholz-coniferous/kwoodcv08.svg"
+}
+
+area.kwoodcv[wood:density=middle] {
+    fill-image: "krummholz-coniferous/kwoodcv06.svg"
+}
+
+area.kwoodcv[wood:density=sparse] {
+    fill-image: "krummholz-coniferous/kwoodcv04.svg"
+}
+area.kwoodcv[wood:density=very_sparse] {
+    fill-image: "krummholz-coniferous/kwoodcv02.svg"
+}
+
+area.kwoodc[wood:age=adult] { set kwoodciv; }
+area.kwoodc[!wood:age] { set kwoodciv; }
+
+area.kwoodciv[wood:density=dense] {
+    fill-image: "krummholz-coniferous/kwoodciv10.svg"
+}
+
+area.kwoodciv[wood:density=normal],
+area.kwoodciv[!wood:density] {
+    fill-image: "krummholz-coniferous/kwoodciv08.svg"
+}
+
+area.kwoodciv[wood:density=middle] {
+    fill-image: "krummholz-coniferous/kwoodciv06.svg"
+}
+
+area.kwoodciv[wood:density=sparse] {
+    fill-image: "krummholz-coniferous/kwoodciv04.svg"
+}
+
+area.kwoodciv[wood:density=very_sparse] {
+    fill-image: "krummholz-coniferous/kwoodciv02.svg"
+}
+
+area.kwoodc[wood:age=middle] { set kwoodciii; }
+
+area.kwoodciii[wood:density=dense] {
+    fill-image: "krummholz-coniferous/kwoodciii10.svg"
+}
+
+area.kwoodciii[wood:density=normal],
+area.kwoodciii[!wood:density] {
+    fill-image: "krummholz-coniferous/kwoodciii08.svg"
+}
+
+area.kwoodciii[wood:density=middle] {
+    fill-image: "krummholz-coniferous/kwoodciii06.svg"
+}
+
+area.kwoodciii[wood:density=sparse] {
+    fill-image: "krummholz-coniferous/kwoodciii04.svg"
+}
+
+area.kwoodciii[wood:density=very_sparse] {
+    fill-image: "krummholz-coniferous/kwoodciii02.svg"
+}
+
+area.kwoodc[wood:age=~/very_young|young/] { set kwoodcii; }
+
+area.kwoodcii[wood:density=dense] {
+    fill-image: "krummholz-coniferous/kwoodcii10.svg"
+}
+
+area.kwoodcii[wood:density=normal],
+area.kwoodcii[!wood:density] {
+    fill-image: "krummholz-coniferous/kwoodcii08.svg"
+}
+
+area.kwoodcii[wood:density=middle] {
+    fill-image: "krummholz-coniferous/kwoodcii06.svg"
+}
+
+area.kwoodcii[wood:density=sparse] {
+    fill-image: "krummholz-coniferous/kwoodcii04.svg"
+}
+
+area.kwoodcii[wood:density=very_sparse] {
+    fill-image: "krummholz-coniferous/kwoodcii02.svg"
+}
+
+/* ------------------- krummholz - larix -------------------- */
+
+area.kwood[leaf_type=needleleaved][leaf_cycle=deciduous] { set kwoodl; }
+
+area.kwoodl[wood:age=old] { set kwoodlv; }
+
+area.kwoodlv[wood:density=dense] {
+    fill-image: "krummholz-larix/kwoodlv10.svg"
+}
+
+area.kwoodlv[wood:density=normal],
+area.kwoodlv[!wood:density] {
+    fill-image: "krummholz-larix/kwoodlv08.svg"
+}
+
+area.kwoodlv[wood:density=middle] {
+    fill-image: "krummholz-larix/kwoodlv06.svg"
+}
+
+area.kwoodlv[wood:density=sparse] {
+    fill-image: "krummholz-larix/kwoodlv04.svg"
+}
+area.kwoodlv[wood:density=very_sparse] {
+    fill-image: "krummholz-larix/kwoodlv02.svg"
+}
+
+area.kwoodd[wood:age=adult] { set kwooddiv; }
+area.kwoodd[!wood:age] { set kwooddiv; }
+
+area.kwoodliv[wood:density=dense] {
+    fill-image: "krummholz-larix/kwoodliv10.svg"
+}
+
+area.kwoodliv[wood:density=normal],
+area.kwoodliv[!wood:density] {
+    fill-image: "krummholz-larix/kwoodliv08.svg"
+}
+
+area.kwoodliv[wood:density=middle] {
+    fill-image: "krummholz-larix/kwoodliv06.svg"
+}
+
+area.kwoodliv[wood:density=sparse] {
+    fill-image: "krummholz-larix/kwoodliv04.svg"
+}
+
+area.kwoodliv[wood:density=very_sparse] {
+    fill-image: "krummholz-larix/kwoodliv02.svg"
+}
+
+area.kwoodl[wood:age=middle] { set kwoodliii; }
+
+area.kwoodliii[wood:density=dense] {
+    fill-image: "krummholz-larix/kwoodliii10.svg"
+}
+
+area.kwoodliii[wood:density=normal],
+area.kwoodliii[!wood:density] {
+    fill-image: "krummholz-larix/kwoodliii08.svg"
+}
+
+area.kwoodliii[wood:density=middle] {
+    fill-image: "krummholz-larix/kwoodliii06.svg"
+}
+
+area.kwoodliii[wood:density=sparse] {
+    fill-image: "krummholz-larix/kwoodliii04.svg"
+}
+
+area.kwoodliii[wood:density=very_sparse] {
+    fill-image: "krummholz-larix/kwoodliii02.svg"
+}
+
+area.kwoodl[wood:age=~/very_young|young/] { set kwoodlii; }
+
+area.kwoodlii[wood:density=dense] {
+    fill-image: "krummholz-larix/kwoodlii10.svg"
+}
+
+area.kwoodlii[wood:density=normal],
+area.kwoodlii[!wood:density] {
+    fill-image: "krummholz-larix/kwoodlii08.svg"
+}
+
+area.kwoodlii[wood:density=middle] {
+    fill-image: "krummholz-larix/kwoodlii06.svg"
+}
+
+area.kwoodlii[wood:density=sparse] {
+    fill-image: "krummholz-larix/kwoodlii04.svg"
+}
+
+area.kwoodlii[wood:density=very_sparse] {
+    fill-image: "krummholz-larix/kwoodlii02.svg"
+}
+
+/* ------------------- krummholz - deciduous -------------------- */
+
+area.kwood[leaf_type=broadleaved][leaf_cycle!=evergreen] { set kwoodd; }
+
+area.kwood[!leaf_type][leaf_cycle!=evergreen] { set kwoodd; }
+
+area.kwoodd[wood:age=old] { set kwooddv; }
+
+area.kwooddv[wood:density=dense] {
+    fill-image: "krummholz-deciduous/kwooddv10.svg"
+}
+
+area.kwooddv[wood:density=normal],
+area.kwooddv[!wood:density] {
+    fill-image: "krummholz-deciduous/kwooddv08.svg"
+}
+
+area.kwooddv[wood:density=middle] {
+    fill-image: "krummholz-deciduous/kwooddv06.svg"
+}
+
+area.kwooddv[wood:density=sparse] {
+    fill-image: "krummholz-deciduous/kwooddv04.svg"
+}
+area.kwooddv[wood:density=very_sparse] {
+    fill-image: "krummholz-deciduous/kwooddv02.svg"
+}
+
+area.kwoodd[wood:age=adult] { set kwooddiv; }
+area.kwoodd[!wood:age] { set kwooddiv; }
+
+area.kwooddiv[wood:density=dense] {
+    fill-image: "krummholz-deciduous/kwooddiv10.svg"
+}
+
+area.kwooddiv[wood:density=normal],
+area.kwooddiv[!wood:density] {
+    fill-image: "krummholz-deciduous/kwooddiv08.svg"
+}
+
+area.kwooddiv[wood:density=middle] {
+    fill-image: "krummholz-deciduous/kwooddiv06.svg"
+}
+
+area.kwooddiv[wood:density=sparse] {
+    fill-image: "krummholz-deciduous/kwooddiv04.svg"
+}
+
+area.kwooddiv[wood:density=very_sparse] {
+    fill-image: "krummholz-deciduous/kwooddiv02.svg"
+}
+
+area.kwoodd[wood:age=middle] { set kwooddiii; }
+
+area.kwooddiii[wood:density=dense] {
+    fill-image: "krummholz-deciduous/kwooddiii10.svg"
+}
+
+area.kwooddiii[wood:density=normal],
+area.kwooddiii[!wood:density] {
+    fill-image: "krummholz-deciduous/kwooddiii08.svg"
+}
+
+area.kwooddiii[wood:density=middle] {
+    fill-image: "krummholz-deciduous/kwooddiii06.svg"
+}
+
+area.kwooddiii[wood:density=sparse] {
+    fill-image: "krummholz-deciduous/kwooddiii04.svg"
+}
+
+area.kwooddiii[wood:density=very_sparse] {
+    fill-image: "krummholz-deciduous/kwooddiii02.svg"
+}
+
+area.kwoodd[wood:age=~/very_young|young/] { set kwooddii; }
+
+area.kwooddii[wood:density=dense] {
+    fill-image: "krummholz-deciduous/kwooddii10.svg"
+}
+
+area.kwooddii[wood:density=normal],
+area.kwooddii[!wood:density] {
+    fill-image: "krummholz-deciduous/kwooddii08.svg"
+}
+
+area.kwooddii[wood:density=middle] {
+    fill-image: "krummholz-deciduous/kwooddii06.svg"
+}
+
+area.kwooddii[wood:density=sparse] {
+    fill-image: "krummholz-deciduous/kwooddii04.svg"
+}
+
+area.kwooddii[wood:density=very_sparse] {
+    fill-image: "krummholz-deciduous/kwooddii02.svg"
+}
+
+/* ------------------- krummholz - tropical -------------------- */
+
+area.kwood[leaf_type=broadleaved][leaf_cycle=evergreen] { set kwoodt; }
+
+area.kwoodt[wood:age=old] { set kwoodtv; }
+
+area.kwoodtv[wood:density=dense] {
+    fill-image: "krummholz-tropical/kwoodtv10.svg"
+}
+
+area.kwoodtv[wood:density=normal],
+area.kwoodtv[!wood:density] {
+    fill-image: "krummholz-tropical/kwoodtv08.svg"
+}
+
+area.kwoodtv[wood:density=middle] {
+    fill-image: "krummholz-tropical/kwoodtv06.svg"
+}
+
+area.kwoodtv[wood:density=sparse] {
+    fill-image: "krummholz-tropical/kwoodtv04.svg"
+}
+area.kwoodtv[wood:density=very_sparse] {
+    fill-image: "krummholz-tropical/kwoodtv02.svg"
+}
+
+area.kwoodt[wood:age=adult] { set kwoodtiv; }
+area.kwoodt[!wood:age] { set kwoodtiv; }
+
+area.kwoodtiv[wood:density=dense] {
+    fill-image: "krummholz-tropical/kwoodtiv10.svg"
+}
+
+area.kwoodtiv[wood:density=normal],
+area.kwoodtiv[!wood:density] {
+    fill-image: "krummholz-tropical/kwoodtiv08.svg"
+}
+
+area.kwoodtiv[wood:density=middle] {
+    fill-image: "krummholz-tropical/kwoodtiv06.svg"
+}
+
+area.kwoodtiv[wood:density=sparse] {
+    fill-image: "krummholz-tropical/kwoodtiv04.svg"
+}
+
+area.kwoodtiv[wood:density=very_sparse] {
+    fill-image: "krummholz-tropical/kwoodtiv02.svg"
+}
+
+area.kwoodt[wood:age=middle] { set kwoodtiii; }
+
+area.kwoodtiii[wood:density=dense] {
+    fill-image: "krummholz-tropical/kwoodtiii10.svg"
+}
+
+area.kwoodtiii[wood:density=normal],
+area.kwoodtiii[!wood:density] {
+    fill-image: "krummholz-tropical/kwoodtiii08.svg"
+}
+
+area.kwoodtiii[wood:density=middle] {
+    fill-image: "krummholz-tropical/kwoodtiii06.svg"
+}
+
+area.kwoodtiii[wood:density=sparse] {
+    fill-image: "krummholz-tropical/kwoodtiii04.svg"
+}
+
+area.kwoodtiii[wood:density=very_sparse] {
+    fill-image: "krummholz-tropical/kwoodtiii02.svg"
+}
+
+area.kwoodt[wood:age=~/very_young|young/] { set kwoodtii; }
+
+area.kwoodtii[wood:density=dense] {
+    fill-image: "krummholz-tropical/kwoodtii10.svg"
+}
+
+area.kwoodtii[wood:density=normal],
+area.kwoodtii[!wood:density] {
+    fill-image: "krummholz-tropical/kwoodtii08.svg"
+}
+
+area.kwoodtii[wood:density=middle] {
+    fill-image: "krummholz-tropical/kwoodtii06.svg"
+}
+
+area.kwoodtii[wood:density=sparse] {
+    fill-image: "krummholz-tropical/kwoodtii04.svg"
+}
+
+area.kwoodtii[wood:density=very_sparse] {
+    fill-image: "krummholz-tropical/kwoodtii02.svg"
+}
+
+/* ------------------- krummholz - undefined -------------------- */
+
+area.kwood[!leaf_type][!leaf_cycle] { set kwoodu; }
+area.kwood[leaf_type=mixed] { set kwoodu; }
+
+area.kwoodu[wood:age=old] { set kwooduv; }
+
+area.kwooduv[wood:density=dense] {
+    fill-image: "krummholz-undefined/kwooduv10.svg"
+}
+
+area.kwooduv[wood:density=normal],
+area.kwooduv[!wood:density] {
+    fill-image: "krummholz-undefined/kwooduv08.svg"
+}
+
+area.kwooduv[wood:density=middle] {
+    fill-image: "krummholz-undefined/kwooduv06.svg"
+}
+
+area.kwooduv[wood:density=sparse] {
+    fill-image: "krummholz-undefined/kwooduv04.svg"
+}
+area.kwooduv[wood:density=very_sparse] {
+    fill-image: "krummholz-undefined/kwooduv02.svg"
+}
+
+area.kwoodu[wood:age=adult] { set kwooduiv; }
+area.kwoodu[!wood:age] { set kwooduiv; }
+
+area.kwooduiv[wood:density=dense] {
+    fill-image: "krummholz-undefined/kwooduiv10.svg"
+}
+
+area.kwooduiv[wood:density=normal],
+area.kwooduiv[!wood:density] {
+    fill-image: "krummholz-undefined/kwooduiv08.svg"
+}
+
+area.kwooduiv[wood:density=middle] {
+    fill-image: "krummholz-undefined/kwooduiv06.svg"
+}
+
+area.kwooduiv[wood:density=sparse] {
+    fill-image: "krummholz-undefined/kwooduiv04.svg"
+}
+
+area.kwooduiv[wood:density=very_sparse] {
+    fill-image: "krummholz-undefined/kwooduiv02.svg"
+}
+
+area.kwoodu[wood:age=middle] { set kwooduiii; }
+
+area.kwooduiii[wood:density=dense] {
+    fill-image: "krummholz-undefined/kwooduiii10.svg"
+}
+
+area.kwooduiii[wood:density=normal],
+area.kwooduiii[!wood:density] {
+    fill-image: "krummholz-undefined/kwooduiii08.svg"
+}
+
+area.kwooduiii[wood:density=middle] {
+    fill-image: "krummholz-undefined/kwooduiii06.svg"
+}
+
+area.kwooduiii[wood:density=sparse] {
+    fill-image: "krummholz-undefined/kwooduiii04.svg"
+}
+
+area.kwooduiii[wood:density=very_sparse] {
+    fill-image: "krummholz-undefined/kwooduiii02.svg"
+}
+
+area.kwoodu[wood:age=~/very_young|young/] { set kwooduii; }
+
+area.kwooduii[wood:density=dense] {
+    fill-image: "krummholz-undefined/kwooduii10.svg"
+}
+
+area.kwooduii[wood:density=normal],
+area.kwooduii[!wood:density] {
+    fill-image: "krummholz-undefined/kwooduii08.svg"
+}
+
+area.kwooduii[wood:density=middle] {
+    fill-image: "krummholz-undefined/kwooduii06.svg"
+}
+
+area.kwooduii[wood:density=sparse] {
+    fill-image: "krummholz-undefined/kwooduii04.svg"
+}
+
+area.kwooduii[wood:density=very_sparse] {
+    fill-image: "krummholz-undefined/kwooduii02.svg"
+}
+
+
+/* ==================== stunted forest ==================== */
+
+area|z14-.forest[wood:flaw=stunted][setting("hide_pattern")] { set swood; color: #008000; z-index: 3 }
+
+/* ------------------- stunted - coniferous -------------------- */
+
+area.swood[leaf_type=needleleaved][leaf_cycle!=deciduous] { set swoodc; }
+
+area.swoodc[wood:age=old] { set swoodcv; }
+
+area.swoodcv[wood:density=dense] {
+    fill-image: "stunted-coniferous/swoodcv10.svg"
+}
+
+area.swoodcv[wood:density=normal],
+area.swoodcv[!wood:density]  {
+    fill-image: "stunted-coniferous/swoodcv08.svg"
+}
+
+area.swoodcv[wood:density=middle] {
+    fill-image: "stunted-coniferous/swoodcv06.svg"
+}
+
+area.swoodcv[wood:density=sparse] {
+    fill-image: "stunted-coniferous/swoodcv04.svg"
+}
+area.swoodcv[wood:density=very_sparse] {
+    fill-image: "stunted-coniferous/swoodcv02.svg"
+}
+
+area.swoodc[wood:age=~/adult|middle/] { set swoodciii; }
+area.swoodc[!wood:age] { set swoodciii; }
+
+area.swoodciii[wood:density=dense]{
+    fill-image: "stunted-coniferous/swoodciii10.svg"
+}
+
+area.swoodciii[wood:density=normal],
+area.swoodciii[!wood:density] {
+    fill-image: "stunted-coniferous/swoodciii08.svg"
+}
+
+area.swoodciii[wood:density=middle] {
+    fill-image: "stunted-coniferous/swoodciii06.svg"
+}
+
+area.swoodciii[wood:density=sparse] {
+    fill-image: "stunted-coniferous/swoodciii04.svg"
+}
+
+area.swoodciii[wood:density=very_sparse] {
+    fill-image: "stunted-coniferous/swoodciii02.svg"
+}
+
+area.swoodc[wood:age=~/young|very_young/] { set swoodci; }
+
+area.swoodci[wood:density=dense] {
+    fill-image: "stunted-coniferous/swoodci10.svg"
+}
+
+area.swoodci[wood:density=normal],
+area.swoodci[!wood:density] {
+    fill-image: "stunted-coniferous/swoodci08.svg"
+}
+
+area.swoodci[wood:density=middle] {
+    fill-image: "stunted-coniferous/swoodci06.svg"
+}
+
+area.swoodci[wood:density=sparse] {
+    fill-image: "stunted-coniferous/swoodci04.svg"
+}
+
+area.swoodci[wood:density=very_sparse] {
+    fill-image: "stunted-coniferous/swoodci02.svg"
+}
+
+/* ------------------- stunted - larix -------------------- */
+
+area.swood[leaf_type=needleleaved][leaf_cycle=deciduous] { set swoodl; }
+
+area.swoodl[wood:age=old] { set swoodlv; }
+
+area.swoodlv[wood:density=dense] {
+    fill-image: "stunted-larix/swoodlv10.svg"
+}
+
+area.swoodlv[wood:density=normal],
+area.swoodlv[!wood:density] {
+    fill-image: "stunted-larix/swoodlv08.svg"
+}
+
+area.swoodlv[wood:density=middle] {
+    fill-image: "stunted-larix/swoodlv06.svg"
+}
+
+area.swoodlv[wood:density=sparse] {
+    fill-image: "stunted-larix/swoodlv04.svg"
+}
+area.swoodlv[wood:density=very_sparse] {
+    fill-image: "stunted-larix/swoodlv02.svg"
+}
+
+area.swoodl[wood:age=~/adult|middle/] { set swoodliii; }
+area.swoodl[!wood:age] { set swoodliii; }
+
+area.swoodliii[wood:density=dense] {
+    fill-image: "stunted-larix/swoodliii10.svg"
+}
+
+area.swoodliii[wood:density=normal],
+area.swoodliii[!wood:density] {
+    fill-image: "stunted-larix/swoodliii08.svg"
+}
+
+area.swoodliii[wood:density=middle] {
+    fill-image: "stunted-larix/swoodliii06.svg"
+}
+
+area.swoodliii[wood:density=sparse] {
+    fill-image: "stunted-larix/swoodliii04.svg"
+}
+
+area.swoodliii[wood:density=very_sparse] {
+    fill-image: "stunted-larix/swoodliii02.svg"
+}
+
+area.swoodl[wood:age=~/young|very_young/] { set swoodli; }
+
+area.swoodli[wood:density=dense] {
+    fill-image: "stunted-larix/swoodli10.svg"
+}
+
+area.swoodli[wood:density=normal],
+area.swoodli[!wood:density] {
+    fill-image: "stunted-larix/swoodli08.svg"
+}
+
+area.swoodli[wood:density=middle] {
+    fill-image: "stunted-larix/swoodli06.svg"
+}
+
+area.swoodli[wood:density=sparse] {
+    fill-image: "stunted-larix/swoodli04.svg"
+}
+
+area.swoodli[wood:density=very_sparse] {
+    fill-image: "stunted-larix/swoodli02.svg"
+}
+
+/* ------------------- stunted - deciduous -------------------- */
+
+area.swood[leaf_type=broadleaved][leaf_cycle!=evergreen] { set swoodd; }
+area.swood[!leaf_type][leaf_cycle!=evergreen] { set swoodd; }
+
+area.swoodd[wood:age=old] { set swooddv; }
+
+area.swooddv[wood:density=dense] {
+    fill-image: "stunted-deciduous/swooddv10.svg"
+}
+
+area.swooddv[wood:density=normal],
+area.swooddv[!wood:density] {
+    fill-image: "stunted-deciduous/swooddv08.svg"
+}
+
+area.swooddv[wood:density=middle] {
+    fill-image: "stunted-deciduous/swooddv06.svg"
+}
+
+area.swooddv[wood:density=sparse] {
+    fill-image: "stunted-deciduous/swooddv04.svg"
+}
+area.swooddv[wood:density=very_sparse] {
+    fill-image: "stunted-deciduous/swooddv02.svg"
+}
+
+area.swoodd[wood:age=~/adult|middle/] { set swooddiii; }
+area.swoodd[!wood:age] { set swooddiii; }
+
+area.swooddiii[wood:density=dense] {
+    fill-image: "stunted-deciduous/swooddiii10.svg"
+}
+
+area.swooddiii[wood:density=normal],
+area.swooddiii[!wood:density] {
+    fill-image: "stunted-deciduous/swooddiii08.svg"
+}
+
+area.swooddiii[wood:density=middle] {
+    fill-image: "stunted-deciduous/swooddiii06.svg"
+}
+
+area.swooddiii[wood:density=sparse] {
+    fill-image: "stunted-deciduous/swooddiii04.svg"
+}
+
+area.swooddiii[wood:density=very_sparse] {
+    fill-image: "stunted-deciduous/swooddiii02.svg"
+}
+
+area.swoodd[wood:age=~/very_young|young/] { set swooddi; }
+
+area.swooddi[wood:density=dense] {
+    fill-image: "stunted-deciduous/swooddi10.svg"
+}
+
+area.swooddi[wood:density=normal],
+area.swooddi[!wood:density] {
+    fill-image: "stunted-deciduous/swooddi08.svg"
+}
+
+area.swooddi[wood:density=middle] {
+    fill-image: "stunted-deciduous/swooddi06.svg"
+}
+
+area.swooddi[wood:density=sparse] {
+    fill-image: "stunted-deciduous/swooddi04.svg"
+}
+
+area.swooddi[wood:density=very_sparse] {
+    fill-image: "stunted-deciduous/swooddi02.svg"
+}
+
+/* ------------------- stunted - tropical -------------------- */
+
+area.swood[leaf_type=broadleaved][leaf_cycle=evergreen] { set swoodt; }
+
+area.swoodt[wood:age=old] { set swoodtv; }
+
+area.swoodtv[wood:density=dense] {
+    fill-image: "stunted-tropical/swoodtv10.svg"
+}
+
+area.swoodtv[wood:density=normal],
+area.swoodtv[!wood:density] {
+    fill-image: "stunted-tropical/swoodtv08.svg"
+}
+
+area.swoodtv[wood:density=middle] {
+    fill-image: "stunted-tropical/swoodtv06.svg"
+}
+
+area.swoodtv[wood:density=sparse] {
+    fill-image: "stunted-tropical/swoodtv04.svg"
+}
+area.swoodtv[wood:density=very_sparse] {
+    fill-image: "stunted-tropical/swoodtv02.svg"
+}
+
+area.swoodt[wood:age=~/adult|middle/] { set swoodtiii; }
+area.swoodt[!wood:age] { set swoodtiii; }
+
+area.swoodtiii[wood:density=dense] {
+    fill-image: "stunted-tropical/swoodtiii10.svg"
+}
+
+area.swoodtiii[wood:density=normal],
+area.swoodtiii[!wood:density] {
+    fill-image: "stunted-tropical/swoodtiii08.svg"
+}
+
+area.swoodtiii[wood:density=middle] {
+    fill-image: "stunted-tropical/swoodtiii06.svg"
+}
+
+area.swoodtiii[wood:density=sparse] {
+    fill-image: "stunted-tropical/swoodtiii04.svg"
+}
+
+area.swoodtiii[wood:density=very_sparse] {
+    fill-image: "stunted-tropical/swoodtiii02.svg"
+}
+
+area.swoodt[wood:age=~/very_young|young/] { set swoodti; }
+
+area.swoodti[wood:density=dense] {
+    fill-image: "stunted-tropical/swoodti10.svg"
+}
+
+area.swoodti[wood:density=normal],
+area.swoodti[!wood:density] {
+    fill-image: "stunted-tropical/swoodti08.svg"
+}
+
+area.swoodti[wood:density=middle] {
+    fill-image: "stunted-tropical/swoodti06.svg"
+}
+
+area.swoodti[wood:density=sparse] {
+    fill-image: "stunted-tropical/swoodti04.svg"
+}
+
+area.swoodti[wood:density=very_sparse] {
+    fill-image: "stunted-tropical/swoodti02.svg"
+}
+
+/* ------------------- stunted - undefined -------------------- */
+
+area.swood[!leaf_type][!leaf_cycle] { set swoodu; }
+area.swood[leaf_type=mixed] { set swoodu; }
+
+area.swoodu[wood:age=old] { set swooduv; }
+
+area.swooduv[wood:density=dense] {
+    fill-image: "stunted-undefined/swooduv10.svg"
+}
+
+area.swooduv[wood:density=normal],
+area.swooduv[!wood:density] {
+    fill-image: "stunted-undefined/swooduv08.svg"
+}
+
+area.swooduv[wood:density=middle] {
+    fill-image: "stunted-undefined/swooduv06.svg"
+}
+
+area.swooduv[wood:density=sparse] {
+    fill-image: "stunted-undefined/swooduv04.svg"
+}
+area.swooduv[wood:density=very_sparse] {
+    fill-image: "stunted-undefined/swooduv02.svg"
+}
+
+area.swoodu[wood:age=~/adult|middle/] { set swooduiii; }
+area.swoodu[!wood:age] { set swooduiii; }
+
+area.swooduiii[wood:density=dense] {
+    fill-image: "stunted-undefined/swooduiii10.svg"
+}
+
+area.swooduiii[wood:density=normal],
+area.swooduiii[!wood:density] {
+    fill-image: "stunted-undefined/swooduiii08.svg"
+}
+
+area.swooduiii[wood:density=middle] {
+    fill-image: "stunted-undefined/swooduiii06.svg"
+}
+
+area.swooduiii[wood:density=sparse] {
+    fill-image: "stunted-undefined/swooduiii04.svg"
+}
+
+area.swooduiii[wood:density=very_sparse] {
+    fill-image: "stunted-undefined/swooduiii02.svg"
+}
+
+area.swoodu[wood:age=~/very_young|young/] { set swoodui; }
+
+area.swoodui[wood:density=dense] {
+    fill-image: "stunted-undefined/swoodui10.svg"
+}
+
+area.swoodui[wood:density=normal],
+area.swoodui[!wood:density] {
+    fill-image: "stunted-undefined/swoodui08.svg"
+}
+
+area.swoodui[wood:density=middle] {
+    fill-image: "stunted-undefined/swoodui06.svg"
+}
+
+area.swoodui[wood:density=sparse] {
+    fill-image: "stunted-undefined/swoodui04.svg"
+}
+
+area.swoodui[wood:density=very_sparse] {
+    fill-image: "stunted-undefined/swoodui02.svg"
+}
+
