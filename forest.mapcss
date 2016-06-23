@@ -1,7 +1,7 @@
 meta {
     title: "Forest";
     description: "Display detailed description of forest stands & related objects";
-    version: "0.0.52";
+    version: "0.0.53";
     author: "igitov";
     icon: "other/icon.svg";
     link: "https://github.com/igitov/forest-josm-style"
@@ -92,11 +92,11 @@ node[man_made=tower][tower:type=observation] {
     z-index: 7
 }
 
-node|z18-.tower { icon-width: 18 }
-node|z17.tower { icon-width: 16 }
-node|z16.tower { icon-width: 14 }
-node|z15.tower { icon-width: 12 }
-node|z14.tower { icon-width: 10 }
+node|z18-.tower { icon-width: 16 }
+node|z17.tower { icon-width: 14 }
+node|z16.tower { icon-width: 12 }
+node|z15.tower { icon-width: 10 }
+node|z14.tower { icon-width: 9 }
 node|z13.tower { icon-width: 8 }
 node|z-12.tower { icon-width: 1 }
 
@@ -114,6 +114,7 @@ node[forestry_sign=fire_danger_rating] { icon-image: "other/board-fdr.svg" }
 node[forestry_sign=wildfire_prevention] { icon-image: "other/board-wfp.svg" }
 node[forestry_sign=forest_district] { icon-image: "other/board-for.svg" }
 node[forestry_sign=informational] { icon-image: "other/board-info.svg" }
+node[forestry_sign=yes] { icon-image: "other/board.svg" }
 
 /* ==================== forestry signposts (used in ex-USSR) ==================== */
 
@@ -214,12 +215,12 @@ node[building][building!=collapsed] {
     icon-image: "other/house.svg"
     }
 
-node|z18-.building { icon-width: 20 }
-node|z17.building { icon-width: 18 }
-node|z16.building { icon-width: 16 }
-node|z15.building { icon-width: 14 }
-node|z14.building { icon-width: 12 }
-node|z13.building { icon-width: 10 }
+node|z18-.building { icon-width: 18 }
+node|z17.building { icon-width: 16 }
+node|z16.building { icon-width: 14 }
+node|z15.building { icon-width: 12 }
+node|z14.building { icon-width: 10 }
+node|z13.building { icon-width: 8 }
 node|z-12.building { icon-width: 1 }
 
 
@@ -2136,8 +2137,8 @@ area.kwoodlv[wood:density=very_sparse] {
     fill-image: "krummholz-larix/kwoodlv02.svg"
 }
 
-area.kwoodd[wood:age=adult] { set kwooddiv; }
-area.kwoodd[!wood:age] { set kwooddiv; }
+area.kwoodl[wood:age=adult] { set kwoodliv; }
+area.kwoodl[!wood:age] { set kwoodliv; }
 
 area.kwoodliv[wood:density=dense] {
     fill-image: "krummholz-larix/kwoodliv10.svg"
@@ -2868,4 +2869,3 @@ area.swoodui[wood:density=sparse] {
 area.swoodui[wood:density=very_sparse] {
     fill-image: "stunted-undefined/swoodui02.svg"
 }
-
